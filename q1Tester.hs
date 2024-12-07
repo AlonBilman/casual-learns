@@ -1,9 +1,4 @@
--- Alon Bilman
--- 211684535
 
---------------------------------- First question ---------------------------------
-
---now I can do : base64Alphabet !! 3 => C  . and '=' as padding.
 base64Alphabet :: [Char]
 base64Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" 
 base64Padding :: Char 
@@ -87,56 +82,49 @@ base64_decode x =
             if '~' `elem` stringToBin y then Error "Not A valid base64 String" else Result(decode (stringToBin y))
         else Error "Not A valid base64 String"
 
-        
---------------------------------- second question ----------------------------------- 
-
-count :: Int -> [Int] -> Int 
-count _ [] = 0;
-count x (y:ys) = if x>y then 1+ count x ys else count x ys
-
-parityCounter :: [Int] -> Int
-parityCounter [] = 0
-parityCounter [x] = 0
-parityCounter (x:xs) = count x xs + parityCounter xs 
--- I could use length [y | y <- xs, x > y] instead of count, but I prefer this solution 
--- (the main reason is that I didnt come up with length [y | y <- xs, x > y] and it took me some time to understand the syntax) 
-
-parity :: [Int] -> Int 
-parity x = let y = parityCounter x in if even y then 1 else -1
 
 
---------------------------------- third question -----------------------------------  
+--------------------------------------TESTING FOR QUESTION 1 (run with typing "main" in ghci)----------------------------------------
 
--- used newton method 
-myAbs :: Double -> Double 
-myAbs x = if x<0 then -x else x
 
-my_sqrt :: Double -> Double 
-my_sqrt x = let guess = x/2.0 in whileDone guess 
-    where 
-    whileDone :: Double -> Double 
-    whileDone guess =
-        if myAbs(guess*guess - x) < 0.000001 
-        then guess 
-        else 
-            whileDone ((guess + x / guess) / 2.0)
+runTest :: String -> String -> String -> String
+runTest testName actual expected =
+    if actual == expected
+        then testName ++ ": PASS"
+        else testName ++ ": FAIL\n  Expected: " ++ expected ++ "\n  Got: " ++ actual
 
---------------------------------- fourth question -----------------------------------  
+runDecodeTest :: String -> Answer -> Answer -> String
+runDecodeTest testName actual expected =
+    if show actual == show expected
+        then testName ++ ": PASS"
+        else testName ++ ": FAIL\n  Expected: " ++ show expected ++ "\n  Got: " ++ show actual
 
-data IntList = Single Int | Multi [IntList] deriving Show
+runTests :: [String]
+runTests = 
+    [ runTest "base64_encode empty" (base64_encode []) ""
+    , runTest "base64_encode single byte" (base64_encode [65]) "QQ=="
+    , runTest "base64_encode two bytes with padding" (base64_encode [65, 66]) "QUI="
+    , runTest "base64_encode three bytes without padding" (base64_encode [65, 66, 67]) "QUJD"
+    , runTest "base64_encode four bytes (with padding)" (base64_encode [65, 66, 67, 68]) "QUJDRA=="
+    , runTest "base64_encode large input" 
+        (base64_encode [72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100]) 
+        "SGVsbG8gV29ybGQ="
 
---a. 
--- NOTE : I have to call the func with brakets. 
--- meaning - sum' (Multi([Single 1, Single 4 , Single 2, Multi [Single 3, Single 4]])) - WORKS 
--- but sum’ Multi ([ Single 1, Single 4 , Single 2, Multi [ Single 3,Single 4 ]]) - DOESNT WORK 
-sum' :: IntList -> Int
-sum' (Single a) = a
-sum' (Multi []) = 0   
-sum' (Multi (x:xs)) = sum' x + sum' (Multi xs)
+    , runDecodeTest "base64_decode empty" (base64_decode "") (Result [])
+    , runDecodeTest "base64_decode valid no padding" (base64_decode "QUJD") (Result [65, 66, 67])
+    , runDecodeTest "base64_decode valid with padding" (base64_decode "QUI=") (Result [65, 66])
+    , runDecodeTest "base64_decode invalid characters" (base64_decode "QU~D") (Error "Not A valid base64 String")
+    , runDecodeTest "base64_decode invalid length" (base64_decode "QUJDRA") (Error "Not A valid base64 String")
+    , runDecodeTest "base64_decode valid multi-character" 
+        (base64_decode "SGVsbG8gV29ybGQ=") 
+        (Result [72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100])
+    ]
 
---b.
--- NOTE : same note as a
-flatten :: IntList -> [Int]
-flatten (Single a) = [a]
-flatten (Multi []) = []
-flatten (Multi (x:xs)) = flatten x ++ flatten (Multi xs)
+--Need to ask Ilan about this 
+main :: IO ()
+main = printResults runTests
+  where
+    printResults [] = return () 
+    printResults (x:xs) = do
+        putStrLn x           
+        printResults xs      
