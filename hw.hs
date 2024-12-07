@@ -140,3 +140,48 @@ flatten :: IntList -> [Int]
 flatten (Single a) = [a]
 flatten (Multi []) = []
 flatten (Multi (x:xs)) = flatten x ++ flatten (Multi xs)
+
+
+-----------------TESTING FOR QUESTION 1 (run with typing "main" in ghci)--------------
+
+runTest :: String -> String -> String -> String
+runTest testName actual expected =
+    if actual == expected
+        then testName ++ ": PASS"
+        else testName ++ ": FAIL\n  Expected: " ++ expected ++ "\n  Got: " ++ actual
+
+runDecodeTest :: String -> Answer -> Answer -> String
+runDecodeTest testName actual expected =
+    if show actual == show expected
+        then testName ++ ": PASS"
+        else testName ++ ": FAIL\n  Expected: " ++ show expected ++ "\n  Got: " ++ show actual
+
+runTests :: [String]
+runTests = 
+    [ runTest "base64_encode empty" (base64_encode []) ""
+    , runTest "base64_encode single byte" (base64_encode [65]) "QQ=="
+    , runTest "base64_encode two bytes with padding" (base64_encode [65, 66]) "QUI="
+    , runTest "base64_encode three bytes without padding" (base64_encode [65, 66, 67]) "QUJD"
+    , runTest "base64_encode four bytes (with padding)" (base64_encode [65, 66, 67, 68]) "QUJDRA=="
+    , runTest "base64_encode large input" 
+        (base64_encode [72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100]) 
+        "SGVsbG8gV29ybGQ="
+
+    , runDecodeTest "base64_decode empty" (base64_decode "") (Result [])
+    , runDecodeTest "base64_decode valid no padding" (base64_decode "QUJD") (Result [65, 66, 67])
+    , runDecodeTest "base64_decode valid with padding" (base64_decode "QUI=") (Result [65, 66])
+    , runDecodeTest "base64_decode invalid characters" (base64_decode "QU~D") (Error "Not A valid base64 String")
+    , runDecodeTest "base64_decode invalid length" (base64_decode "QUJDRA") (Error "Not A valid base64 String")
+    , runDecodeTest "base64_decode valid multi-character" 
+        (base64_decode "SGVsbG8gV29ybGQ=") 
+        (Result [72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100])
+    ]
+
+--Need to ask Ilan about this 
+main :: IO ()
+main = printResults runTests
+  where
+    printResults [] = return () 
+    printResults (x:xs) = do
+        putStrLn x           
+        printResults xs      
