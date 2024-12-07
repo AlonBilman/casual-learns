@@ -1,4 +1,7 @@
+-- Alon Bilman
+-- 211684535
 
+-------------------------------------------------------ONLY Q1 AND IT'S TESTER------------------------------------------------
 base64Alphabet :: [Char]
 base64Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" 
 base64Padding :: Char 
