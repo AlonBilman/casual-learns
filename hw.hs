@@ -1,4 +1,3 @@
-
 -- Alon Bilman
 -- 211684535
 
@@ -78,3 +77,42 @@ decode x =
 base64_decode :: String -> [Int] 
 base64_decode "" = []
 base64_decode x = if length x `mod` 4 == 0 then decode( stringToBin x) else []  
+
+-- problem with = and it does not return error codes
+-- -------------------------------------------------------------------------------------------------------------------
+
+-- second question :
+
+count :: Int -> [Int] -> Int 
+count _ [] = 0;
+count x (y:ys) = if x>y then 1+ count x ys else count x ys
+
+parityCounter :: [Int] -> Int
+parityCounter [] = 0
+parityCounter [x] = 0
+parityCounter (x:xs) = count x xs + parityCounter xs 
+-- I could use length [y | y <- xs, x > y] instead of count, but I prefer this solution 
+-- (the main reason is that I didnt come up with length [y | y <- xs, x > y] and it took me some time to understand the syntax) 
+
+parity :: [Int] -> Int 
+parity x = let y = parityCounter x in if even y then 1 else -1
+
+
+-- third question : 
+
+-- used newton-raphson method
+myAbs :: Double -> Double 
+myAbs x = if x<0 then -x else x
+
+mySqrt :: Double -> Double 
+mySqrt x = let guess = x/2.0 in whileDone guess 
+    where 
+    whileDone :: Double -> Double 
+    whileDone guess =
+        if myAbs(guess*guess - x) < 0.000001 
+        then guess 
+        else 
+            whileDone ((guess + x / guess) / 2.0)
+
+
+--fourth question
