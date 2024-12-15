@@ -1,8 +1,6 @@
--- Alon Bilman
--- 211684535
 
 --------------------------------- First question ---------------------------------
-
+--Encode and Decode base64
 --now I can do : base64Alphabet !! 3 => C  . and '=' as padding.
 base64Alphabet :: [Char]
 base64Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" 
@@ -111,8 +109,8 @@ parity x = let y = parityCounter x in if even y then 1 else -1
 myAbs :: Double -> Double 
 myAbs x = if x<0 then -x else x
 
-my_sqrt :: Double -> Double 
-my_sqrt x = let guess = x/2.0 in whileDone guess 
+mysqrt :: Double -> Double 
+mysqrt x = let guess = x/2.0 in whileDone guess 
     where 
     whileDone :: Double -> Double 
     whileDone guess =
