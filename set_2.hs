@@ -122,6 +122,6 @@ sieve n =
         algo ((x, False):xys) = (x,False) : algo xys 
         algo ((x,True):xys) = (x,True) : algo(cross x xys) 
 
-        --Insane, this was tha hardest one so far
+        --Insane, this was the hardest one so far
 
 ------------------------------------------------END OF SET 2--------------------------------------------------
