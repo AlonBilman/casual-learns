@@ -44,6 +44,7 @@ splitByEither xs func =
 
     isRight (Right _) = True
     isRight _         = False
+
 -- another implementation (Better)
 
 --splitByEither :: [t] -> (t -> Either t t) -> ([t], [t])
@@ -60,3 +61,43 @@ f item = if odd (length item) then Left item else Right item
 --run splitByEither [ "It" , "was", "a" , "many", "and", "many" , "years", "ago" ] f 
 
 -----------------------------------------------------THIRD QUESTION-------------------------------------------------------------
+type BinOp = Float -> Float -> Maybe Float  
+data ExprTree =  ExprValue Float | ExprNode ExprTree BinOp ExprTree
+
+--Write a function eval, which takes an ExprTree and evaluates its value.
+
+eval :: ExprTree -> Maybe Float
+eval (ExprValue x) = Just x 
+eval (ExprNode x y z) = 
+    let first = eval x 
+        second = eval z     
+    in 
+        if isNothing first || isNothing second 
+            then Nothing 
+            else y (extract first) (extract second) 
+    where 
+        isNothing Nothing = True
+        isNothing _ = False
+
+        extract (Just a) = a 
+
+--another way to do it, using do in haskell (Better)
+eval2 :: ExprTree -> Maybe Float
+eval2 (ExprValue x) = Just x
+eval2 (ExprNode left op right) = do
+    l <- eval left    
+    r <- eval right  
+    op l r  --apply the binary operation if both are `Just` 
+
+--EXAMPL 
+addOp :: Float -> Float -> Maybe Float 
+addOp a b = Just (a+b) 
+divOp :: Float -> Float -> Maybe Float 
+divOp a b = if b == 0 then Nothing else Just (a/b) 
+
+sample_tree1 :: ExprTree
+sample_tree1 = ExprNode ( ExprValue 3  ) divOp  ( ExprNode ( ExprValue 0 ) addOp ( ExprValue 0 ))
+sample_tree2 :: ExprTree
+sample_tree2 = ExprNode ( ExprValue 3  ) divOp  ( ExprNode ( ExprValue 4 ) addOp ( ExprValue 6 ))
+
+-----------------------------------------------End for set 2------------------------------------------------------
