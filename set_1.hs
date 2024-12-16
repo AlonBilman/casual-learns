@@ -175,7 +175,6 @@ runTests =
         (Result [72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100])
     ]
 
---Need to ask Ilan about this 
 main :: IO ()
 main = printResults runTests
   where

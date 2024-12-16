@@ -1,5 +1,5 @@
 
-----------------------------------------------------------------FIRST QUESTION-------------------------------------------------
+----------------------------------------------------FIRST QUESTION----------------------------------------
 -- balanced binary tree (getting ordered list of ints)
 
 data BinTree = Empty | Leaf Int |  Node BinTree Int BinTree deriving Show 
@@ -30,7 +30,7 @@ addItemToBalancedTree y (Leaf x) = Node (Leaf x) y Empty --Come on.. a tree cant
 addItemToBalancedTree y x = let flat = flattanTree x ++ [y] in makeBalancedTree flat
 --example : ghci> addItemToBalancedTree 11 (Node (Node (Node (Leaf 1) 3 Empty) 5 (Leaf 6)) 7 (Node (Leaf 8) 9 (Leaf 10)))
 
-----------------------------------------------------------------SECOND QUESTION-------------------------------------------------
+------------------------------------------------------SECOND QUESTION--------------------------------------------
 
 splitByEither :: [t] -> (t -> Either t t) -> ([t], [t])
 splitByEither xs func = 
@@ -100,4 +100,28 @@ sample_tree1 = ExprNode ( ExprValue 3  ) divOp  ( ExprNode ( ExprValue 0 ) addOp
 sample_tree2 :: ExprTree
 sample_tree2 = ExprNode ( ExprValue 3  ) divOp  ( ExprNode ( ExprValue 4 ) addOp ( ExprValue 6 ))
 
------------------------------------------------End for set 2------------------------------------------------------
+-----------------------------------------------FOURTH QUESTION------------------------------------------------------
+
+-- sieve of Eratosthenes , an ancient algorithm - link : https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+
+sieve :: Int -> [(Int,Bool)]
+sieve n = 
+    let y = [(i,True)|i<-[1..n]] 
+        in algo y  
+    where 
+        cross :: Int-> [(Int,Bool)] -> [(Int,Bool)]
+        cross i [] = []
+        cross i ((x, y):xys) = 
+            if x `mod` i == 0 
+            then (x, False) : cross i xys 
+            else (x, y) : cross i xys
+            
+        algo :: [(Int,Bool)] -> [(Int,Bool)]
+        algo [] = []
+        algo ((1, _):xys) = (1,False) : algo xys
+        algo ((x, False):xys) = (x,False) : algo xys 
+        algo ((x,True):xys) = (x,True) : algo(cross x xys) 
+
+        --Insane, this was tha hardest one so far
+
+------------------------------------------------END OF SET 2--------------------------------------------------
