@@ -56,8 +56,13 @@ pascaline n = map (choose n) [0..n]
 
 ----------------------------------------FIFTH QUESTION----------------------------------------------
 
-{- Write a function is_square, which takes a Matrix t and 
+{- Write a function isSquare, which takes a Matrix t and 
     determines whether it represents a square matrix.-}
 
 type Matrix t = [[t]]
+
+isSquare :: Matrix t -> Bool
+isSquare [] = True
+--for every row in the matrix, the length of the row must match the number of rows in the matrix.
+isSquare x = foldl(\acc y -> acc && (length x == length y)) True x 
 
