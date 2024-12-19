@@ -44,7 +44,7 @@ returns the n_th line of the Pascal Triangle. -} --https://en.wikipedia.org/wiki
 choose :: Int -> Int -> Int 
 choose 0 _ = 1
 choose _ 0  = 1
-choose x y = factorial x `div` (factorial y * factorial (x-y))
+choose x y = if y > x then 0 else factorial x `div` (factorial y * factorial (x-y))
         where 
             factorial :: Int -> Int 
             factorial 0 = 1
@@ -65,4 +65,19 @@ isSquare :: Matrix t -> Bool
 isSquare [] = True
 --for every row in the matrix, the length of the row must match the number of rows in the matrix.
 isSquare x = foldl(\acc y -> acc && (length x == length y)) True x 
+
+----------------------------------------SIXTH QUESTION-----------------------------------------------
+{-Implement an ID card validation function using a checksum.
+
+Algorithm:
+- Ensure the number has exactly 9 digits, pad with 0's if shorter.
+- Double every second digit from the left.
+    Example: [1,3,5,1,6,7…] -> [1, 6, 5, 2, 6, 14…]
+- Sum the digits of the doubled values and the undoubled digits.
+    Example: [1, 6, 5, 2, 6, 14] -> 1 + 6 + 5 + 2 + 6 + 1 + 4
+- If the sum modulo 10 is 0, the number is valid.
+
+-After that Write the function -  validate
+validate 58908021 should give -> True 
+validate 12345678 should give -> False -}
 
