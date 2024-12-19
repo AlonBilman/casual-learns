@@ -81,3 +81,16 @@ Algorithm:
 validate 58908021 should give -> True 
 validate 12345678 should give -> False -}
 
+toDigits :: Integer -> [Integer]
+toDigits x | x<=0 = [] 
+toDigits x = let digits = helper x 
+                in replicate (9 - length digits) 0 ++ digits
+    --I could use [read [d] | d <- show x] instad of the helper. it turns a number into a list of its digits as integers.
+    where
+    helper x | x<=0 = [] 
+    helper x = helper (x `div` 10) ++ [x `mod` 10]
+
+doubleEveryOther :: [Integer] -> [Integer]
+doubleEveryOther [] = [] 
+doubleEveryOther x = let indexedList = zip x [0,1..] 
+                        in map (\(val, idx) -> if even idx then 2 * val else val) indexedList
