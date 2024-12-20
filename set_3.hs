@@ -93,4 +93,15 @@ toDigits x = let digits = helper x
 doubleEveryOther :: [Integer] -> [Integer]
 doubleEveryOther [] = [] 
 doubleEveryOther x = let indexedList = zip x [0,1..] 
-                        in map (\(val, idx) -> if even idx then 2 * val else val) indexedList
+                        in map (\(val, idx) -> if odd idx then 2 * val else val) indexedList
+
+sumDigits :: [Integer] -> Integer
+sumDigits [] = 0
+sumDigits [x] = x
+sumDigits x = sum (map (\y -> if y>9 then sum (toDigits y) else y) x)
+
+validate :: Integer -> Bool
+validate x = sumDigits(doubleEveryOther(toDigits x)) `mod` 10 == 0
+
+
+----------------------------------------END OF SET 3-----------------------------------------------
