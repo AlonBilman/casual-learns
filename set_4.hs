@@ -40,3 +40,55 @@ invert3 x (a, b)
     helper3 :: [t] -> Int -> Int -> [t]
     helper3 xs a b = 
         map (\(i, e) -> if i == a then xs !! b else if i == b then xs !! a else e) (zip [0..] xs)
+---------------------------------------------------------------------------------------------------------------------------
+-- Matrix transpose 
+
+type Matrix t = [[t]]
+
+transpose :: Matrix t -> Matrix t 
+transpose ([]:_) = [] -- if one of the elements are empty then the whole matrix is empty
+transpose xs = map head xs : transpose (map tail xs)
+
+----------------------------------------------------------------------------------------------------------------------------
+
+{-The function scan takes a list, scans it from beginning to end, and
+compares each of the adjacent elements: if they are in ascending
+order, then it keeps the elements in the same order, otherwise, it
+swaps the positions of the two elements. -}
+
+scan :: [Int] -> [Int]
+scan [] = []
+scan [x] = [x]
+scan (x:y:xs) = if x<y then x : scan (y:xs) else y : scan (x:xs) 
+
+----------------------------------------------------------------------------------------------------------------------------
+
+{-  •Define the function filtered_map, which is a combination of the filter
+        and map functions.
+    • filtered_map takes two parameters: a unary function f and a list of
+        items of type t. The function f is applied on each element of the input
+        list and returns (Maybe t). If f returns Nothing, the given element is
+        removed from the result list. If f returns Just t, t is placed in the result
+        list.
+-}
+
+filteredMap :: (t->Maybe t) -> [t] -> [t]
+filteredMap _ [] = []
+filteredMap f xs = map(\(Just x) -> x)(filter isJust (map f xs))
+                where 
+                    isJust :: Maybe t -> Bool 
+                    isJust (Just _) = True
+                    isJust _ = False
+
+--another way to do it
+filteredMap2 :: (t -> Maybe t) -> [t] -> [t]
+filteredMap2 _ [] = []
+filteredMap2 f xs = [x | Just x <- map f xs]
+
+--and another one
+filteredMap3 :: (t -> Maybe t) -> [t] -> [t]
+filteredMap3 f list = foldl(\acc item -> acc ++ convertMaybe (f item)) [] list
+                    where 
+                        convertMaybe :: Maybe t -> [t]
+                        convertMaybe Nothing = []
+                        convertMaybe (Just x) = [x]
