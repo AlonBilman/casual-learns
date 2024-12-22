@@ -55,6 +55,7 @@ transpose xs = map head xs : transpose (map tail xs)
 compares each of the adjacent elements: if they are in ascending
 order, then it keeps the elements in the same order, otherwise, it
 swaps the positions of the two elements. -}
+--no one told me that the list is a list of integers , bettwer way was to say - scan :: Ord t => [t] -> [t]
 
 scan :: [Int] -> [Int]
 scan [] = []
