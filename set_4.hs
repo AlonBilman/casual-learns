@@ -61,6 +61,15 @@ scan [] = []
 scan [x] = [x]
 scan (x:y:xs) = if x<y then x : scan (y:xs) else y : scan (x:xs) 
 
+--another way to do it
+scan2 :: [Int] -> [Int]
+scan2 [] = []
+scan2 [x] = [x] 
+scan2 x = foldl (\acc i -> if acc !! i > acc !! (i+1) then switch acc i (i+1) else acc) x [0..length x - 2]
+                where 
+                    switch :: [Int] -> Int -> Int -> [Int]
+                    switch xs a b = map (\(i, e) -> if i == a then xs !! b else if i == b then xs !! a else e) (zip [0..] xs)
+
 ----------------------------------------------------------------------------------------------------------------------------
 
 {-  •Define the function filtered_map, which is a combination of the filter
