@@ -24,7 +24,7 @@ removeIfIndex x = map snd (filter (\(i, e) -> e /= i) (zip [0..] x))
 data BinTree t = Empty | Node (BinTree t) t (BinTree t) deriving (Eq,Ord,Show) 
 
 {-Declare and define a function is_sorted, which returns True if the tree sorted (that is, each node stores a 
-key greater than all the keys in the node's left subtree and less than those in its right subtree)-}\
+key greater than all the keys in the node's left subtree and less than those in its right subtree)-}
 
 inOrder :: BinTree t -> [t]
 inOrder Empty = []
