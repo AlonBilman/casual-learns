@@ -38,13 +38,38 @@ isSorted tree = let y = inOrder tree
 BinTree whose values are those found in both trees.  
 Important: You can assume that the source trees are sorted.-}                
 
+listToTree :: Ord a => [a] -> BinTree a
+listToTree [] = Empty
+listToTree (x:xs) = Node (listToTree (filter(<x) xs)) x (listToTree (filter(>x) xs))
+
 intersectTrees :: Ord a => BinTree a -> BinTree a -> BinTree a
 intersectTrees Empty _ = Empty
 intersectTrees _ Empty = Empty
 intersectTrees tree1 tree2 = let y = inOrder tree1
                                  z = inOrder tree2
                                  in listToTree (filter (`elem` z) y)
-                                 where 
-                                    listToTree :: Ord a => [a] -> BinTree a
-                                    listToTree [] = Empty
-                                    listToTree (x:xs) = Node (listToTree (filter(<x) xs)) x (listToTree (filter(>x) xs))
+                                                                
+{-Write a function mergeSortedTrees that takes two sorted binary trees and merges them into a single sorted binary tree.
+The resulting tree should contain all the elements from both input trees, maintaining the sorted order.-}
+
+mergeSortedTrees :: Ord a => BinTree a -> BinTree a -> BinTree a 
+mergeSortedTrees tree1 tree2 = let list1 = inOrder tree1 
+                                   list2 = inOrder tree2
+                                   in listToTree (filter (`notElem` list1) list2 ++ list1)
+
+
+{-Transactions are represented as tuples: (String, Double). 
+The String indicates the type ("deposit" or "withdrawal"), and the Double is the amount. 
+Apply to withdrawal 5% fee , calculate balance-}
+
+type Transaction = (String,Double)
+
+calculateBalance :: [Transaction] -> Double
+calculateBalance [] = 0 
+calculateBalance xs = let dep = map snd (filter (\(t,n) -> t=="deposit") xs)
+                          wid = map (\(t,n)-> n * (-1.05)) (filter (\(t,n)-> t == "withdrawal") xs)
+                          in sum dep + sum wid
+
+------------------------------------------------------------------------------------------------------------
+
+                          
