@@ -10,9 +10,12 @@ evenOdd :: String -> Either String Bool
 evenOdd [] = Left "Empty String"
 evenOdd ('0':xs) = Left "Not a number"
 evenOdd ('-':xs) = Left "Not a positive number or not a number"
-evenOdd xs = if isNumber xs then if even (length xs) then Right True else Right False else Left "Not a number"
+evenOdd xs = if isNumber xs 
+             then if even (foldl(\acc e -> if even (read [e] :: Int) then acc + 1 else acc) 0 xs) && 
+                     even (foldl(\acc e -> if odd (read [e] :: Int) then acc + 1 else acc) 0 xs)
+               then Right True else Right False else Left "Not a number"
     where isNumber :: String -> Bool
-          isNumber = foldl (\acc i -> acc && (i `elem` ['0'..'9'])) True
+          isNumber = foldl (\acc i -> acc && (i `elem` ['0'..'9'])) True 
 
 ---------------------------------------------------------------------------------------------------------------
 {-Write a function is_valid which takes a string and decides whether the 
