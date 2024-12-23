@@ -66,6 +66,36 @@ isSquare [] = True
 --for every row in the matrix, the length of the row must match the number of rows in the matrix.
 isSquare x = foldl(\acc y -> acc && (length x == length y)) True x 
 
+{- Write a function map_matrix, which takes a Matrix t, and a 
+function and returns a new Matrix t. The elements of the new 
+matrix are created by applying the function to each of the items 
+in the argument. 
+map_matrix (^2) [[1,2],[3,2]] should return [[1,4],[9,4]]-}
+
+mapMatrix :: (t -> t) -> Matrix t -> Matrix t
+mapMatrix _ [] = []
+mapMatrix f x = map (map f) x
+
+{-Wrute map_matrix2
+The difference from map_matrix is that the 
+function that we apply to each element takes not only the item 
+but also a tuple that contains its indices. Here is the 
+declaration for map_matrix2 -}
+
+map_matrix2 :: (t -> (Int,Int) -> u )->Matrix t->Matrix u
+map_matrix2 _ [] = []
+map_matrix2 f x = map (\(row, e) -> map (\(col, e2) -> f e2 (row, col)) (zip [0..] e)) (zip [0..] x)
+
+
+{-Write a function transpose, which takes a square matrix 
+and transposes it (rotates values around the main axis). This 
+function must use map_matrix2-}
+
+transpose :: Matrix t -> Matrix t
+transpose [] = [] 
+transpose x = map_matrix2 (\e (row,col) -> (x !! col) !! row) x
+
+
 ----------------------------------------SIXTH QUESTION-----------------------------------------------
 {-Implement an ID card validation function using a checksum.
 
