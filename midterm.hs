@@ -88,9 +88,9 @@ input parameters and returns True if both lists have the same elements, maybe in
 a different order. Note that this implies that the two lists are of the same length.-}
 
 same_contents :: Eq t => [t] -> [t] -> Bool
-same_contents [] [] = True
-same_contents [] _ = False
-same_contents _ [] = False
+--same_contents [] [] = True
+--same_contents [] _ = False
+--same_contents _ [] = False
 same_contents list1 list2 = length list1 == length list2 &&
                             foldl (\acc e -> acc && (e `elem` list2)) True list1 &&
                             foldl (\acc e -> acc && (e `elem` list1)) True list2
@@ -101,3 +101,30 @@ returns Maybe [(Int,Int)]. It returns Nothing if the lists do not have the same
 contents (see 3a). If they have the same contents, the function returns a list of
 transpositions that convert the first list to the 2nd
 . -}
+
+
+switch :: [t] -> Int -> Int -> [t]
+switch xs a b = map (\(i, e) -> if i == a then xs !! b else if i == b then xs !! a else e) (zip [0..] xs)
+
+findIndex :: Eq t => t -> [t] -> Int
+findIndex x xs = head (map fst (filter (\(i, e) -> e == x) (zip [0..] xs)))
+
+transpose_to :: Eq t => [t] -> [t] -> Maybe [(Int,Int)]
+transpose_to list1 list2 = if same_contents list1 list2 
+                           then Just (transpose_to' list1 list2 0) 
+                           else Nothing
+                            where
+                                transpose_to' :: Eq t => [t] -> [t] -> Int -> [(Int,Int)]
+                                transpose_to' [] [] _ = []
+                                transpose_to' list1 list2 index =
+                                    if index == length list1 then [] 
+                                    else 
+                                        let x = list2 !! index 
+                                            y = findIndex x list1 
+                                            in 
+                                         if ( y == index || x == list2 !! y ) then transpose_to' list1 list2 (index + 1)
+                                         else (y, index) : (transpose_to'  list1 (switch list2 index y) (index+1)) 
+
+-- Im actually proud of this one, it was tricky.
+                                        
+
