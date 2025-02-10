@@ -1,4 +1,8 @@
 
+--ALON BILMAN 
+--ID: 211684535
+
+
 {-1.a-}
 
 remove_consecutive :: Eq t => [t] -> [t]
@@ -62,7 +66,7 @@ same_contents list1 list2 = length list1 == length list2 &&
 
 {-3b-}
 
-
+--need fix. does not work.
 switch :: [t] -> Int -> Int -> [t]
 switch xs a b = map (\(i, e) -> if i == a then xs !! b else if i == b then xs !! a else e) (zip [0..] xs)
 
@@ -85,6 +89,6 @@ transpose_to list1 list2 = if same_contents list1 list2
                                          if ( y == index || x == list2 !! y ) then transpose_to' list1 list2 (index + 1)
                                          else (y, index) : (transpose_to'  list1 (switch list2 index y) (index+1)) 
 
--- Im actually proud of this one, it was tricky.
-                                        
+
+                                
 
