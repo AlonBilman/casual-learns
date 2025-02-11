@@ -22,6 +22,12 @@ function isValidId(n) {
 console.log(isValidId(222920134)); //random id number that is valid 
 
 
-
 //fizz buzz 
+const arr = (n) => Array.from({length: n}, (_, i) => i + 1); //create array of numbers from 1 to n
+const fizzBuzz = (n) => arr(n).map(item => 
+                              item % 3 === 0 && item % 5 === 0 ? "fizzBuzz" 
+                            : item % 3 === 0 ? "fizz" 
+                            : item % 5 ===0 ? "buzz" 
+                            : item);
 
+console.log(fizzBuzz(200)); //fizz buzz array
