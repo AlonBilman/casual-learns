@@ -90,7 +90,7 @@ declaration for map_matrix2 -}
 
 map_matrix2 :: (t -> (Int,Int) -> u )->Matrix t->Matrix u
 map_matrix2 _ [] = []
-map_matrix2 f x = map (\(row, e) -> map (\(col, e2) -> f e2 (row, col)) (zip [0..] e)) (zip [0..] x)
+map_matrix2 f m = map (\(row, e) -> map (\(col, e2) -> f e2 (row, col)) (zip [0..] e)) (zip [0..] m)
 
 
 {-Write a function transpose, which takes a square matrix 
@@ -99,7 +99,7 @@ function must use map_matrix2-}
 
 transpose :: Matrix t -> Matrix t
 transpose [] = [] 
-transpose x = map_matrix2 (\e (row,col) -> (x !! col) !! row) x
+transpose x = map_matrix2 (\_ (row,col) -> (x !! col) !! row) x
 
 
 ----------------------------------------SIXTH QUESTION-----------------------------------------------
@@ -138,6 +138,15 @@ sumDigits x = sum (map (\y -> if y>9 then sum (toDigits y) else y) x)
 
 validate :: Integer -> Bool
 validate x = sumDigits(doubleEveryOther(toDigits x)) `mod` 10 == 0
+
+--And now that I have sort of experience in Haskell, here is a bettwer solution : 
+
+validate2 :: Integer -> Bool
+validate2 x = let digit = replicate (9- length(show x)) '0' ++ show x
+              in let digitArr = map (\x -> read [x] :: Int) digit
+              in let digitArrDoubled = map (\(i,e)-> if i `mod` 2 == 0 then e else e*2) (zip [0..] digitArr)
+              in let digitArrDoubledSeperated = foldl(\acc e -> if e > 9 then acc ++ [e `div` 10, e `mod` 10] else acc ++ [e]) [] digitArrDoubled
+              in sum digitArrDoubledSeperated `mod` 10 == 0
 
 
 ----------------------------------------END OF SET 3-----------------------------------------------
