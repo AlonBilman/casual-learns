@@ -89,6 +89,16 @@ eval2 (ExprNode left op right) = do
     r <- eval right  
     op l r  --apply the binary operation if both are `Just` 
 
+
+eval3 :: ExprTree -> Maybe Float
+eval3 (ExprValue x) = Just x
+eval3 (ExprNode left op right) = 
+    let x = eval left
+        y = eval right 
+        in case (x,y) of 
+            (Just a, Just b) -> op a b
+            _ -> Nothing
+
 --EXAMPL 
 addOp :: Float -> Float -> Maybe Float 
 addOp a b = Just (a+b) 

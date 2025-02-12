@@ -20,6 +20,12 @@ isShifted x y = (length x == length y)  &&
                         shiftStringFor 0 x = x
                         shiftStringFor i x = foldl(\acc _-> shiftString acc) x (take i [1..])
 
+--another way to do it
+isShifted2 :: String -> String -> Bool
+isShifted2 "" "" = True
+isShifted2 x y = (length x == length y) &&
+        foldl (\acc str -> acc || shiftString str == y) False (take (length x) (iterate shiftString x))
+                    
                         
 ----------------------------------------THIRD QUESTION-----------------------------------------------
 
