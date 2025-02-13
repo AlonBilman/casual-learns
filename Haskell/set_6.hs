@@ -28,6 +28,10 @@ isValid :: String -> Bool
 isValid x  = foldl (\acc e -> if acc + e < 0 then acc - (length x + 1) else acc + e ) 0
                      (map (\k -> if k== ')' then -1 else if k == '(' then 1 else 0) x) == 0
 
+isValid2 :: String -> Bool
+isValid2 str = let y = map(\x -> if x == '(' then 1 else if x == ')' then -1 else 0) str
+              in sum y == 0 && fst (foldl(\(acc,sum) x -> (acc && sum+x >= 0 ,sum+x)) (True,0) y)
+              
 {-Write a function find_matching that takes a string and an index of a left 
 parenthesis and returns the index of the matching right parenthesis. 
 You can safely assume that the string is valid according to the previous question 
