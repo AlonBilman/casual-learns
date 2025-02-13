@@ -48,6 +48,13 @@ intersectTrees _ Empty = Empty
 intersectTrees tree1 tree2 = let y = inOrder tree1
                                  z = inOrder tree2
                                  in listToTree (filter (`elem` z) y)
+
+interSectTrees2 :: Ord t => BinTree t -> BinTree t -> BinTree t
+interSectTrees2 Empty _ = Empty
+interSectTrees2 _ Empty = Empty
+interSectTrees2 (Node t1 e t2)(Node t3 el t4) = if e == el then Node (interSectTrees2 t1 t3) e (interSectTrees2 t2 t4) else Empty 
+
+
                                                                 
 {-Write a function mergeSortedTrees that takes two sorted binary trees and merges them into a single sorted binary tree.
 The resulting tree should contain all the elements from both input trees, maintaining the sorted order.-}

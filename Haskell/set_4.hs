@@ -40,6 +40,16 @@ invert3 x (a, b)
     helper3 :: [t] -> Int -> Int -> [t]
     helper3 xs a b = 
         map (\(i, e) -> if i == a then xs !! b else if i == b then xs !! a else e) (zip [0..] xs)
+
+--Cleaner...
+invert4 :: [t] -> (Int, Int) -> Either String [t]
+invert4 [] _ = Left "Array is empty"
+invert4 arr (x,y) 
+            |x>y || x<0 || y<0 || x>=length arr || y>=length arr = Left "bad params"
+            |otherwise =  Right (
+                map(\(elem,index)-> if index == x then arr !! y else if index == y then arr !! x else elem ) (zip arr [0..]))
+
+
 ---------------------------------------------------------------------------------------------------------------------------
 -- Matrix transpose 
 
@@ -63,14 +73,11 @@ scan [x] = [x]
 scan (x:y:xs) = if x<y then x : scan (y:xs) else y : scan (x:xs) 
 
 --another way to do it
-scan2 :: [Int] -> [Int]
-scan2 [] = []
-scan2 [x] = [x] 
-scan2 x = foldl (\acc i -> if acc !! i > acc !! (i+1) then switch acc i (i+1) else acc) x [0..length x - 2]
+scan2 :: Ord t => [t] -> [t]
+scan2 x =foldl(\acc (curr,other) -> if acc!!curr>acc!!other then switch acc (curr,other) else acc) x (take (length x -1) (zip [0..] [1..]))
                 where 
-                    switch :: [Int] -> Int -> Int -> [Int]
-                    switch xs a b = map (\(i, e) -> if i == a then xs !! b else if i == b then xs !! a else e) (zip [0..] xs)
-
+                    switch :: [t] -> (Int,Int) -> [t]
+                    switch xs (a,b) = map (\(i, e) -> if i == a then xs !! b else if i == b then xs !! a else e) (zip [0..] xs)
 ----------------------------------------------------------------------------------------------------------------------------
 
 {-  •Define the function filtered_map, which is a combination of the filter
@@ -102,3 +109,9 @@ filteredMap3 f list = foldl(\acc item -> acc ++ convertMaybe (f item)) [] list
                         convertMaybe :: Maybe t -> [t]
                         convertMaybe Nothing = []
                         convertMaybe (Just x) = [x]
+
+filteredMap4 :: (t -> Maybe t) -> [t] -> [t]
+filteredMap4 f x = foldl(\acc e-> case f e of 
+                Just a -> acc ++ [a]
+                Nothing -> acc) [] x
+                
