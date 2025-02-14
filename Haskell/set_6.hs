@@ -58,8 +58,22 @@ type Op t = t -> t
 type Dictionary t = [(String, Op t)]
 
 compose :: String -> Dictionary t -> Op t
-compose str dic = let nstr = reverse (words (map (\e -> if e=='.' then ' ' else e) str))
-                      in foldl (\acc e -> acc . snd (head (filter (\(i,f)-> i == e) dic ))) id nstr
+compose str dict = let nStr = words (map(\x -> if x == '.' then ' ' else x) str)
+                in foldl(\res x-> res . snd (head (filter (\y -> fst y == x) dict))) id nStr
+
+--Some tests : 
+
+dic :: Dictionary Int
+dic = [("add", (+2)), ("sub", subtract 2), ("mul", (*3))]
+
+main :: IO ()
+main = do
+    print $ compose "add . mul . sub" dic 10  -- Expected: 26
+    print $ compose "mul . add" dic 4        -- Expected: 18
+    print $ compose "sub . mul" dic 6        -- Expected: 16
+    print $ compose "add . sub . mul" dic 5  -- Expected: 15
+    print $ compose "" dic 7                 -- Expected: 7 (identity function)
+
 ------------------------------------------------------------------------------------------------------------------
 {-filter_with_index is a higher order function taking two
 parameters: a predicate f and a list, and produces a list
