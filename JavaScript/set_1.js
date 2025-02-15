@@ -1,11 +1,9 @@
 // set 1 :
 
-
 //remove dups from array 
 const removeDups = (arr) => arr.reduce((acc, item) => acc.includes(item) ? acc : [...acc, item], []);
 console.log("remove dups from [1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9] : ");   
 console.log(removeDups([1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9])); // [1,2,3,4,5,6,7,8,9]
-
 
 //verify id number 
 
@@ -21,7 +19,6 @@ function isValidId(n) {
 
 console.log(isValidId(222920134)); //random id number that is valid 
 
-
 //fizz buzz 
 const arr = (n) => Array.from({length: n}, (_, i) => i + 1); //create array of numbers from 1 to n
 const fizzBuzz = (n) => arr(n).map(item => 
@@ -31,3 +28,25 @@ const fizzBuzz = (n) => arr(n).map(item =>
                             : item);
 
 console.log(fizzBuzz(200)); //fizz buzz array
+
+/*Implement a recursive version of map. 
+The function should take an array and a transformation function and return a new array with the transformation applied. */
+
+const recursiveMap = (arr, fn) => {
+  if(arr.length === 0) return [];
+  const [head, ...tail] = arr;
+  return [fn(head), ...recursiveMap(tail, fn)];
+}
+
+/*Create a function compose that takes multiple functions and returns a new function that composes them. */
+
+const compose = (...fns) => (x) => 
+  fns.reduceRight((acc, fn) => fn(acc), x);
+
+/*You need to implement a function curry that transforms a function into a curried version. */
+
+const curry = (fn,...args) => {
+  return args.length >= fn.length 
+        ? fn(...args) 
+        : (...nextArgs) => curry(fn, ...args, ...nextArgs); //else returning a new func
+};
