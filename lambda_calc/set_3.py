@@ -47,3 +47,65 @@ f                                                   //Done
 
 ------------------------------------------------------------------------------------------------------------
 
+Reduce : 
+
+(λx.λy.λz.xz(yz))((λx.λy.yx)u)((λx.λy.yx)v)w         //Alpha
+(λx.λy.λz.xz(yz))((λa.λb.ba)u)((λc.λd.dc)v)w         //Beta
+(λz.((λa.λb.ba)u)z(((λc.λd.dc)v)z))w                 //Beta
+((λa.λb.ba)u)w(((λc.λd.dc)v)w)                       //Beta
+(λb.bu)w(((λc.λd.dc)v)w)                             //Beta
+(wu)(((λc.λd.dc)v)w)                                 //Beta
+(wu)((λd.dv)w)                                       //Beta
+(wu)(wv)                                             //Done 
+wuwv   
+
+------------------------------------------------------------------------------------------------------------
+0 = λf.λx.x
+1 = λf.λx.fx
+2 = λf.λx.f(fx)
+
+n = λf.λx.fn
+
+succ = λn.λf.λx.f(nfx)
+iszero = λz.z(λy.false)true
+
+1. Prove that : succ 0 = 1
+2. Prove that : succ 1 = 2
+3. Prove that : iszero 0 = true
+4. Prove that : iszero 1 = false
+
+
+1 : 
+succ 0
+(λn.λf.λx.f(nfx)) 0                     //Beta
+λf.λx.f(0 f x)  
+λf.λx.f((λf.λy.y) f x)                  //Beta
+λf.λx.f((λy.y) x)                       //Beta
+λf.λx.fx                                //Beta
+1
+
+2 :
+succ 1
+(λn.λf.λx.f(nfx)) 1                     //Beta
+λf.λx.f(1 f x)  
+λf.λx.f((λf.λx.fx) f x)                 //Beta
+λf.λx.f((λx.fx) x)                      //Beta
+λf.λx.f(fx)
+3    
+
+3 :
+iszero 0 
+(λz.z(λy.false)true)0                    //Beta
+(0(λy.false)true)       
+(λf.λx.x)(λy.false)true                  //Beta
+(λx.x)true                               //Beta
+true
+
+4 :
+iszero 1
+(λz.z(λy.false)true)1                    //Beta
+(1(λy.false)true)       
+(λf.λx.fx)(λy.false)true                 //Beta
+(λx.(λy.false)x)true                     //Beta 
+(λy.false)true                           //Beta
+false

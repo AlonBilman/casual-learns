@@ -24,8 +24,8 @@ SKK
 SI2(λx. + x 1)                          //exactly like ((MN)p)Q
 (λx.λy.λz.xz(yz))I2(λx. + x 1)          //Beta
 (λy.λz.Iz(yz))2(λx. + x 1)              //Beta
-(λz.Iz(2z))(λx. + x 1)                  //Beta
-(λz.z(2z))(λx. + x 1)                   //Beta
+(λz.Iz(2 z))(λx. + x 1)                  //Beta
+(λz.z(2 z))(λx. + x 1)                   //Beta
 (λx. + x 1)(2(λx. + x 1))               //Beta
 (λx. + x 1)(2 + 1)                      //Delta
 (λx. + x 1)(3)                          //Beta
@@ -53,28 +53,28 @@ ABABA
 AA 
 ------------------------------------------------------------------------
 SKISKK
-(λx.λy.λz.xz(yz))KISKK
-λy.λz.Kz(yz)ISKK
-(λz.Kz(Iz))SKK  ----.
-(λz.Kzz)I           |
-(λz.z)I             |
+(λx.λy.λz.xz(yz))KISKK                   //Beta
+λy.λz.Kz(yz)ISKK                         //Beta
+(λz.Kz(Iz))SKK  ----.                    //Ix = x
+(λz.Kzz)I           |                    //Kxy = x
+(λz.z)I             |                    //Beta
 I                   |
                     |
-(λz.Kz(Iz))SKK    <-' 
-(λz.z)SKK
-(S)KK
-(λx.λy.λz.xz(yz))KK
-(λy.λz.Kz(yz))K
-λz.Kz(Kz)
-λz.z 
+(λz.Kz(Iz))SKK    <-'                     
+(λz.z)SKK                                //Beta
+(S)KK                   
+(λx.λy.λz.xz(yz))KK                     
+(λy.λz.Kz(yz))K                          //Beta
+λz.Kz(Kz)                                //Beta
+λz.z                                     //Beta + Kxy = x
 I
 ------------------------------------------------------------------------
 SII(SII)
-(λx.λy.λz.xz(yz))II(SII)
-(λy.λz.Iz(yz))I(SII)
-(λz.Iz(Iz))(SII)
-(λz.zz)(SII)
-SII(SII)
+(λx.λy.λz.xz(yz))II(SII)                 //Beta
+(λy.λz.Iz(yz))I(SII)                     //Beta
+(λz.Iz(Iz))(SII)                         //Ix = x
+(λz.zz)(SII)                             //Beta
+SII(SII)                                 //...
 ------------------------------------------------------------------------
 
 exersices: 
@@ -112,4 +112,3 @@ zzy
 (λx.x) (λx.+ 1 x)                            // Beta 
 (λx.+ 1 x)                                   // Beta 
 ------------------------------------------------------------------------
-
