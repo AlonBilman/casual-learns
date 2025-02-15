@@ -1,4 +1,3 @@
-import Data.List.NonEmpty (xor)
 --From final 2023_a
 
 {-1.-}
@@ -91,3 +90,21 @@ fromString str =
             | fst x == "-" = Sub
             | fst x == "*" = Mul
             | fst x == "/" = Div
+
+
+
+--From final 2023_b -- Already did it. set_3 ... But I did it again
+
+type Matrix t = [[t]]
+
+isSquare :: Matrix t -> Bool
+isSquare mat = foldl(\acc x -> acc && (length mat == length x)) True mat
+
+mapMatrix :: (t -> u) -> Matrix t ->   Matrix u 
+mapMatrix func = map (map func) -- same as mapMatrix func mat = map (map func) mat
+
+mapMatrix2 :: (t -> (Int,Int) -> u )->Matrix t->Matrix u 
+mapMatrix2 func mat = map (\(row,rowInx) -> (map (\(col, colInx) -> func col (rowInx,colInx)) (zip row [0..]))) (zip mat [0..])
+
+transposeMatrix :: Matrix t -> Matrix t -- ofc it has to be squared.. for non - see set_4
+transposeMatrix mat = mapMatrix2 (\_ (row,col) -> (mat !! col) !! row ) mat 
