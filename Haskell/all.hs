@@ -261,3 +261,38 @@ and returns a Boolean value that is the result of some condition on the element 
 filterWithIdex :: (a -> Int -> Bool) -> [a] -> [a]
 filterWithIdex f xs = map fst (filter (\(x,y) -> f x y) (zip xs [0..]))
 
+
+
+
+removeConsecutive :: Eq t => [t] -> [t]
+removeConsecutive x = reverse $ foldl(\acc elem -> if length acc == 0 then elem : acc else if elem == head acc then acc else elem : acc ) [] x
+
+
+filteredMap2 :: (t -> Maybe t) -> [t] -> [t]
+filteredMap2 func list = map (\(Just x) -> x) ( filter (\x -> case x of 
+                                                            Nothing -> False 
+                                                            otherwise -> True) (map func list))
+
+filteredMap3 :: (t -> Maybe t) -> [t] -> [t] 
+filteredMap3 func list = foldl(\acc element -> acc ++ convert(func element)) [] list
+                            where 
+                                convert x = case x of 
+                                            Nothing -> []
+                                            (Just x) -> [x]
+                                            
+sameContents :: Eq t => [t] -> [t] -> Bool
+sameContents list1 list2 = let a = foldl(\acc el -> acc && el `elem` list2) True list1
+                               b = foldl(\acc el -> acc && el `elem` list1) True list2
+                               c = length list1 == length list2 
+                               in a && b && c
+
+
+
+
+
+------------------------------------------------------
+{-
+
+
+
+-}

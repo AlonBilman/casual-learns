@@ -43,3 +43,66 @@ flatten :: IntList -> [Int]
 flatten (Single x) = [x]
 flatten (Multi []) = []
 flatten (Multi (x:xs)) = flatten x ++ flatten (Multi xs)
+
+
+--from 2024 b 
+
+type Matrix t = [[t]]
+
+--first one is to flatten
+matFoldRows :: (a -> t -> a) -> a -> Matrix t -> a 
+matFoldRows func acc mat = let y = foldl (\acc x -> acc ++ x) [] mat in 
+                           foldl(\acc x -> func acc x) acc y
+
+matFoldRows2 :: (a -> t -> a) -> a -> Matrix t -> a 
+matFoldRows2 func acc mat = foldl (\acc row -> foldl func acc row) acc mat
+                          -- I could do : func = foldl (foldl func)
+
+matFoldCols :: (a -> t -> a) -> a -> Matrix t -> a
+matFoldCols func acc mat = matFoldRows func acc (transpose mat)
+
+
+transpose :: Matrix t -> Matrix t 
+transpose ([]:_) = [] -- if one of the elements are empty then the whole matrix is empty
+transpose xs = map head xs : transpose (map tail xs) 
+
+
+sumCols :: Matrix Int -> [Int]
+sumCols mat =
+  let rowCount = length mat
+      colCount = length (head mat)
+      (finalCount, finalSums) = matFoldCols (\(cnt, currentSums) item ->
+              let colIndex = cnt `div` rowCount                         -- Which column are we in?
+                  updatedSums = updateAt colIndex (+ item) currentSums
+              in (cnt + 1, updatedSums)) (0, replicate colCount 0) mat
+  in finalSums
+
+-- apply a function at a given index 
+updateAt :: Int -> (x -> x) -> [x] -> [x]
+updateAt _ _ []     = []
+updateAt 0 f (x:xs) = f x : xs
+updateAt n f (x:xs) = x : updateAt (n - 1) f xs
+
+
+{-
+Look at the code below. It defines a function called at_least. As an example, it uses a function is_prime 
+that tests whether a number (larger than 2) is prime or not.  How many times does your code (for 
+at_least) calls the function is_prime? Write a function at_least_fast that has the same parameters as 
+at_least but uses just necessary calls.
+-}
+
+atLeast :: [t] -> ( t -> Bool ) -> Int -> Bool 
+atLeast l f n =   ( foldl ( \acc item -> if ( f item ) then (acc + 1) else acc ) 0 l) >= n 
+
+isPrime :: Int -> Bool 
+isPrime n = n > 2 &&  length ( filter (\item -> (( mod n item) == 0) ) ( take (n-2) [2..] )) == 0 
+
+-- Impl
+atLeastFast :: [t] -> (t -> Bool) -> Int -> Bool 
+atLeastFast l f n = atLeastHelper l f 0
+  where
+    atLeastHelper [] _ count = count >= n
+    atLeastHelper (x:xs) f count
+      | count >= n     = True  
+      | f x {-==True-} = atLeastHelper xs f (count + 1) --found 1
+      | otherwise      = atLeastHelper xs f count
