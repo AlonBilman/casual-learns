@@ -18,3 +18,28 @@ maybeFoldl func acc = foldl(\ maybeAcc elem-> case maybeAcc of
 -- maybeFoldl (\acc x -> Just (acc * x)) 1 [2,3,4,5,6,7,8,9] -> Just 362880
 
 
+{-
+As you know, it’s impossible to create a list like the following in Haskell:
+[1, 4, 2, [3,4]]
+However, we can define a new type to allow us to mimic this structure:
+-}
+
+data IntList = Single Int | Multi [IntList] deriving Show
+
+--Write a function, sum' which takes a variable of type IntList and returns the sum of all the numbers in it.
+
+sum' :: IntList -> Int
+sum' (Single x) = x
+sum' (Multi []) = 0
+sum' (Multi (x:xs)) = sum' x + sum' (Multi xs) 
+
+{-
+Write a function, flatten which takes a variable of type IntList and returns a list of the
+Int values in it
+
+-}
+
+flatten :: IntList -> [Int]
+flatten (Single x) = [x]
+flatten (Multi []) = []
+flatten (Multi (x:xs)) = flatten x ++ flatten (Multi xs)
