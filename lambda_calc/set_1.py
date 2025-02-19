@@ -4,6 +4,15 @@
  • K = λx.λy. x                | Kxy = x 
  • S = λx.λy.λz. x z (y z)     | Sxyz = xz(yz)
  • SKK is exactly I             
+
+
+ η (eta) conversion: 
+ If M is a λ-expression in which there is no free occurrence of x, then λx.Mx 
+ can be replaced by M. 
+ This is a rather rare conversion. 
+    For example: λx.((λy. + 1 y) x) → λy. + 1 y
+
+
 -----------------------------------------------------------------------
 
 (λf. λy. f (f y)) (λx. + x x) 3         //mark N = (λx. + x x) + Beta
@@ -130,4 +139,3 @@ zzy
 ((λw. (λx.x w) a w)) b                     //Beta
 (λx.x b) a b                               //Beta
 (a b) b                                    //Done
-

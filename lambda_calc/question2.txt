@@ -1,0 +1,50 @@
+Alon Bilman
+211684535
+
+Question 2 : 
+
+from the powerpoint :
+ I = λx.x                    | Ix = x 
+ K = λx.λy. x                | Kxy = x 
+ S = λx.λy.λz. x z (y z)     | Sxyz = xz(yz)
+ SKK is exactly I             
+
+2.a : 
+
+F = S(K(SI))K 
+
+Prove that : FLL = LL
+
+Proof:
+                                                           
+FLL 
+(S(K(SI))K)LL                                                                  
+((λx.λy.λz. x z (y z))(K(SI))K)LL       //Beta                          
+((λy.λz. (K(SI)) z (y z))K)LL           //Beta                  
+(λz. (K(SI)) z (K z))LL                 //Beta                  
+((K(SI)) L (K L))L                                              
+(((λx.λy. x )(SI)) L (K L))L            //Beta          
+((λy. SI) L (K L))L                     //Beta          
+(SI (K L))L
+((λx.λy.λz. x z (y z) )I (K L))L        //Beta
+((λy.λz. I z (y z)) (K L))L             //Beta
+(λz. I z ((K L) z))L                    //Beta
+(I L ((K L) L))                         //Ix = x
+(L ((K L) L))               
+(L (((λx.λy. x) L) L))                  //Beta
+(L ((λy. L) L))                         //Beta
+(L (L))  
+LL                                      //Done
+
+
+2.b :
+
+Reduce with normal order (call by name): 
+
+(λx. (λy.λz. z y) x) f ((λx. x)(λx. x))             //Alpha
+(λx. (λy.λz. z y) x) f ((λa. a)(λb. b))             //Beta 
+(λy.λz. z y) f ((λa. a)(λb. b))                     //Beta
+(λz. z f)((λa. a)(λb. b))                           //Beta
+((λa. a)(λb. b)) f                                  //Beta
+(λb. b) f                                           //Beta
+f                                                   //Done cant reduce more

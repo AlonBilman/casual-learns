@@ -285,14 +285,3 @@ sameContents list1 list2 = let a = foldl(\acc el -> acc && el `elem` list2) True
                                b = foldl(\acc el -> acc && el `elem` list1) True list2
                                c = length list1 == length list2 
                                in a && b && c
-
-
-
-
-
-------------------------------------------------------
-{-
-
-
-
--}

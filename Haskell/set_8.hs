@@ -77,6 +77,8 @@ sumCols mat =
               in (cnt + 1, updatedSums)) (0, replicate colCount 0) mat
   in finalSums
 
+
+
 -- apply a function at a given index 
 updateAt :: Int -> (x -> x) -> [x] -> [x]
 updateAt _ _ []     = []

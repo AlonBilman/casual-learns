@@ -24,7 +24,7 @@ isShifted x y = (length x == length y)  &&
 isShifted2 :: String -> String -> Bool
 isShifted2 "" "" = True
 isShifted2 x y = (length x == length y) &&
-        foldl (\acc str -> acc || shiftString str == y) False (take (length x) (iterate shiftString x))
+        foldl (\acc str -> acc || str == y) False (take (length x) (iterate shiftString x))
                     
                         
 ----------------------------------------THIRD QUESTION-----------------------------------------------
